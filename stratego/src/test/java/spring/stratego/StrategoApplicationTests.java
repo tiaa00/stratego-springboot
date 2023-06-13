@@ -1,4 +1,4 @@
-package spring.stratego.stratego;
+package spring.stratego;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
