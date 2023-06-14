@@ -2,14 +2,14 @@ package spring.stratego;
 
 import java.util.Scanner;
 
-// import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class StrategoApplication {
 
 	public static void main(String[] args) {
-		// SpringApplication.run(StrategoApplication.class, args);
+		SpringApplication.run(StrategoApplication.class, args);
 		GameRoomManager gameRoomManager = new GameRoomManager();
 
         // Create a game room
@@ -26,14 +26,18 @@ public class StrategoApplication {
             e.printStackTrace();
         }
 
-		Scanner s = new Scanner(System.in);
-        // // Join game room
-		System.out.println("*First player*\nEnter username:");
-		String username1 = s.next();
-		System.out.println("*Second player*\nEnter username:");
-        String username2 = s.next();
-		System.out.println("*Enter room code to join:");
-        String roomNo = s.next();
+		// Scanner s = new Scanner(System.in);
+        // // // Join game room
+		// System.out.println("*First player*\nEnter username:");
+		// String username1 = s.next();
+		// System.out.println("*Second player*\nEnter username:");
+        // String username2 = s.next();
+		// System.out.println("*Enter room code to join:");
+        // String roomNo = s.next();
+
+        String username1 = "player1";
+        String username2 = "player2";
+        String roomNo = "room1";
 
 		boolean join1 = gameRoomManager.joinGameRoom(roomNo, username1);
         System.out.println("Player1 joined game room: " + join1);
