@@ -25,6 +25,7 @@ public class ClientHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         onReceiveMessage(payload);
         System.out.println("Session URI: " + session.getUri());
+        System.out.println("Session ID: " + session.getId());
         try {
             String messageString = "Hello, Client " + clientCount++ + "!";
             sendMessage(session, messageString);

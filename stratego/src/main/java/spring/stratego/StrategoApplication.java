@@ -1,11 +1,21 @@
 package spring.stratego;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @SpringBootApplication
+@Controller
 public class StrategoApplication {
 
 	public static void main(String[] args) {
@@ -68,5 +78,30 @@ public class StrategoApplication {
         // Shutdown the game room manager (terminate the thread pool)
         gameRoomManager.shutdown();
 	}
+
+    // @PostMapping("/submit")
+    // public String handleUserSubmit(@RequestParam String username, RedirectAttributes redirectAttributes) {
+    //     // You can now use this username for whatever you want.
+    //     // System.out.println(username);
+    //     // Add the username to the redirect attributes
+    //     redirectAttributes.addFlashAttribute("username", username);
+
+    //     // Redirect to the allroom page
+    //     return "redirect:/allroom";
+    // }
+
+    @PostMapping("/allroom")
+    public String showAllRoom(Model model, @RequestParam String username) {
+
+        // Add the username to the model
+        model.addAttribute("username", username);
+        return "allroom";
+    }
+
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("message", "Hello, Thymeleaf!");
+        return "index";
+    }
 
 }
