@@ -8,7 +8,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 
-public class MyHandler extends TextWebSocketHandler {
+public class ClientHandler extends TextWebSocketHandler {
 
     private int clientCount = 1;
 
