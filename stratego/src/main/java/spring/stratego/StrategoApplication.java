@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
+
 @SpringBootApplication
 @Controller
 public class StrategoApplication {
@@ -91,9 +93,8 @@ public class StrategoApplication {
     // }
 
     @PostMapping("/allroom")
-    public String showAllRoom(Model model, @RequestParam String username) {
-
-        // Add the username to the model
+    public String showAllRoom(Model model, @RequestParam String username, HttpSession session) {
+        session.setAttribute("username", username);
         model.addAttribute("username", username);
         return "allroom";
     }

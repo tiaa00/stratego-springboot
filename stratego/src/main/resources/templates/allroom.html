@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p th:text="${username}"></p>
+    <h1>Session Data: <span th:text="${session['username']} ?: ${username}"></span></h1>
 </body>
 </html>
