@@ -1,4 +1,4 @@
-var socket = new SockJS('/myHandler');
+var socket = new SockJS('/clientHandler');
 
 socket.onopen = function() {
     console.log('open');
