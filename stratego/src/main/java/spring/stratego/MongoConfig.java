@@ -2,10 +2,10 @@ package spring.stratego;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 
 @Configuration
 public class MongoConfig {
@@ -18,7 +18,7 @@ public class MongoConfig {
     }
 
     @Bean
-    public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), databaseName);
+    public MongoDatabase mongoDatabase() {
+        return mongoClient().getDatabase(databaseName);
     }
 }
