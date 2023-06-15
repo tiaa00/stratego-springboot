@@ -13,6 +13,10 @@ class GameRoom {
     private Lock turnLock; //to ensure only one thread can modify it at a time
     private int turn;
     private Board board;
+    
+    // TODO use Player object List<Player> instead of String
+    // private Player player1;
+    // private Player player2;
 
     public GameRoom(String roomId) {
         this.roomId = roomId;
