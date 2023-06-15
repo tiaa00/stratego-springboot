@@ -134,6 +134,7 @@ public class StrategoApplication {
         } else {
             System.out.println("Player not found.");
         }
+    }
 
     // @PostMapping("/submit")
     // public String handleUserSubmit(@RequestParam String username, RedirectAttributes redirectAttributes) {
