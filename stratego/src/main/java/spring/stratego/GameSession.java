@@ -43,15 +43,6 @@ public class GameSession {
         return ResponseEntity.ok(String.valueOf(roomId));
     }
 
-    // @PostMapping("/lobby")
-    // public String showLobby(Model model, @RequestParam String username, HttpSession session) {
-    //     // method to store into database.
-    //     // createPlayer(username, session.toString());
-    //     session.setAttribute("username", username);
-    //     model.addAttribute("username", username);
-    //     return "lobby";
-    // }
-
 
     /*
      * Join room endpoint
