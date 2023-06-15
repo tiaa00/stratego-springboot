@@ -14,7 +14,7 @@ public class MongoConfig {
 
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create("mongodb+srv://stratego2023:stratego2023@stratego.xsjzd7p.mongodb.net/?retryWrites=true&w=majority");
+        return MongoClients.create("mongodb+srv://stratego2023:stratego2023@cluster0.49ega6i.mongodb.net/stratego?retryWrites=true&w=majority");
     }
 
     @Bean
