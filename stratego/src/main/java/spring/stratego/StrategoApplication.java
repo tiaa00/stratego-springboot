@@ -140,15 +140,16 @@ public class StrategoApplication {
     //     // Add the username to the redirect attributes
     //     redirectAttributes.addFlashAttribute("username", username);
 
-    //     // Redirect to the allroom page
-    //     return "redirect:/allroom";
+    //     // Redirect to the lobby page
+    //     return "redirect:/lobby";
     // }
 
-    @PostMapping("/allroom")
-    public String showAllRoom(Model model, @RequestParam String username, HttpSession session) {
+    @PostMapping("/lobby")
+    public String showLobby(Model model, @RequestParam String username, HttpSession session) {
+        // method to store into database.
         session.setAttribute("username", username);
         model.addAttribute("username", username);
-        return "allroom";
+        return "lobby";
     }
 
     @GetMapping("/")
