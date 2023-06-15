@@ -3,7 +3,7 @@ package spring.stratego.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Player")
+@Document(collection = "player")
 public class Player {
     @Id
     private String id;

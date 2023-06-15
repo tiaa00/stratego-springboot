@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import spring.stratego.model.Chat;
 import spring.stratego.model.Player;
+import spring.stratego.service.ChatService;
 import spring.stratego.service.PlayerService;
 
 @SpringBootApplication
@@ -27,9 +29,16 @@ public class StrategoApplication {
         // Create and run Spring Boot application
         ConfigurableApplicationContext context = SpringApplication.run(StrategoApplication.class, args);
         PlayerService playerService = context.getBean(PlayerService.class);
+        ChatService chatService = context.getBean(ChatService.class);
 
         // Create and insert a player
         createPlayer(playerService, "Munir", "3");
+        // Create a chat
+        createChat(chatService, "Hello, how are you?", "1");
+        // Retrieve Chat By ID
+        getChatById(chatService, "1");
+
+
 
         // Close the application context
         context.close();
@@ -102,7 +111,22 @@ public class StrategoApplication {
         System.out.println("Created Player: " + createdPlayer);
     }
 
+    private static void createChat(ChatService chatService, String chatLog, String chatId) {
+        Chat chat = new Chat();
+        chat.setChatLog(chatLog);
+        chat.setChatId(chatId);
+        Chat createdChat = chatService.createChat(chat);
+        System.out.println("Created Chat: " + createdChat);
+    }
 
+    private static void getChatById(ChatService chatService, String chatId) {
+        Chat chat = chatService.getChatById(chatId);
+        if (chat != null) {
+            System.out.println("Retrieved Chat: " + chat);
+        } else {
+            System.out.println("Chat not found.");
+        }
+    }
 
 
     // @PostMapping("/submit")
