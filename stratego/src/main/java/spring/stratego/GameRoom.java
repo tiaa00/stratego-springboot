@@ -83,11 +83,11 @@ class GameRoom {
         }
 
         // Check if the piece at the source coordinates belongs to the current player
-        // Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-        // if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn % 2))) {
-        //     System.out.println("Invalid source piece");
-        //     return false;
-        // }
+        Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
+        if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn % 2))) {
+            System.out.println("Invalid source piece");
+            return false;
+        }
 
         if (!isAdjacent(fromX, fromY, destX, destY)) {
             return false; //cannot move

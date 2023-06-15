@@ -90,7 +90,7 @@ public class StrategoApplication {
     }
 
     //optional to use(?)
-    public static void joinGameRoomAndPlay(String roomID, String player1, String player2){
+    public static void joinGameRoomAndPlay(String roomID, Player player1, Player player2){
         //to check the player is join the room or not
         boolean join1 = gameRoomManager.joinGameRoom(roomID, player1);
         boolean join2 = gameRoomManager.joinGameRoom(roomID, player2);

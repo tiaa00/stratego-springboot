@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import spring.stratego.model.Player;
+
 // GameRoomManager class for managing game rooms
 class GameRoomManager {
     private Map<String, GameRoom> gameRooms;
@@ -25,7 +27,7 @@ class GameRoomManager {
         return gameRooms.get(roomId);
     }
 
-    public boolean joinGameRoom(String roomId, String player) {
+    public boolean joinGameRoom(String roomId, Player player) {
         GameRoom gameRoom = gameRooms.get(roomId);
         if (gameRoom != null && gameRoom.getPlayers().size() < 2) {
             gameRoom.addPlayer(player);
