@@ -31,20 +31,20 @@ public class StrategoApplication {
         PlayerService playerService = context.getBean(PlayerService.class);
         ChatService chatService = context.getBean(ChatService.class);
 
+        //CRUD
         // Create and insert a player
         createPlayer(playerService, "Munir", "3");
         // Create a chat
         createChat(chatService, "Hello, how are you?", "1");
         // Retrieve Chat By ID
         getChatById(chatService, "1");
-
-
-
+        // Retrieve a player by ID
+        getPlayerById(playerService, "3");
         // Close the application context
         context.close();
+
+
 		GameRoomManager gameRoomManager = new GameRoomManager();
-
-
 
         // Create a game room
 		// roomID suppossedly auto generated  by database
@@ -127,7 +127,13 @@ public class StrategoApplication {
             System.out.println("Chat not found.");
         }
     }
-
+    private static void getPlayerById(PlayerService playerService, String playerId) {
+        Player retrievedPlayer = playerService.getPlayerById(playerId);
+        if (retrievedPlayer != null) {
+            System.out.println("Retrieved Player: " + retrievedPlayer.getName());
+        } else {
+            System.out.println("Player not found.");
+        }
 
     // @PostMapping("/submit")
     // public String handleUserSubmit(@RequestParam String username, RedirectAttributes redirectAttributes) {
