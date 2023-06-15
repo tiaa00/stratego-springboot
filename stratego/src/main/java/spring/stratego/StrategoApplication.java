@@ -30,7 +30,6 @@ public class StrategoApplication {
     public static void main(String[] args) {
         // Create and run Spring Boot application
         SpringApplication.run(StrategoApplication.class, args);
-
 	}
 
     private void createPlayer(String name, String id) {
