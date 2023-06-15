@@ -66,17 +66,6 @@ public class StrategoApplication {
         }
     }
 
-    // @PostMapping("/submit")
-    // public String handleUserSubmit(@RequestParam String username, RedirectAttributes redirectAttributes) {
-    //     // You can now use this username for whatever you want.
-    //     // System.out.println(username);
-    //     // Add the username to the redirect attributes
-    //     redirectAttributes.addFlashAttribute("username", username);
-
-    //     // Redirect to the lobby page
-    //     return "redirect:/lobby";
-    // }
-
     @PostMapping("/lobby")
     public String showLobby(Model model, @RequestParam String username, HttpSession session) {
         // method to store into database.
@@ -123,5 +112,10 @@ public class StrategoApplication {
         gameRoomManager.shutdown();
         System.out.println("Game exited");
         System.exit(0); //to forcefully terminate the application
+    }
+
+    @GetMapping("/game")
+    public String gameRoom(Model model) {
+        return "game";
     }
 }

@@ -13,6 +13,10 @@ class GameRoom {
     private Lock turnLock; //to ensure only one thread can modify it at a time
     private int turn;
     private Board board;
+    
+    // TODO use Player object List<Player> instead of String
+    // private Player player1;
+    // private Player player2;
 
     public GameRoom(String roomId) {
         this.roomId = roomId;
@@ -107,24 +111,24 @@ class GameRoom {
     }
 
     private void updateGameState(int fromX, int fromY, int destX, int destY) {
-    // Move the piece from the source square to the destination square
-    Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-    board.setPieceAtCoordinate(destX, destY, sourcePiece);
-    board.setPieceAtCoordinate(fromX, fromY, null);
+        // Move the piece from the source square to the destination square
+        Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
+        board.setPieceAtCoordinate(destX, destY, sourcePiece);
+        board.setPieceAtCoordinate(fromX, fromY, null);
 
-    // Check if the destination square contains a bomb piece
-    if (sourcePiece instanceof BombPiece) {
-        // Remove the piece from the game board
-        board.setPieceAtCoordinate(destX, destY, null);
-        System.out.println("Player encountered a bomb! Piece removed.");
-    }
+        // Check if the destination square contains a bomb piece
+        if (sourcePiece instanceof BombPiece) {
+            // Remove the piece from the game board
+            board.setPieceAtCoordinate(destX, destY, null);
+            System.out.println("Player encountered a bomb! Piece removed.");
+        }
 
-    // Check if the destination square contains a flag piece
-    if (sourcePiece instanceof FlagPiece) {
-        // The player has won the game
-        // System.out.println( getplayer+ " captured the flag! Game over. Player wins!");
-        gameState = "Game Over";
+        // Check if the destination square contains a flag piece
+        if (sourcePiece instanceof FlagPiece) {
+            // The player has won the game
+            // System.out.println( getplayer+ " captured the flag! Game over. Player wins!");
+            gameState = "Game Over";
+        }
     }
-}
 
 }
