@@ -100,7 +100,7 @@ public class StrategoApplication {
         }
 
         // Shutdown the game room manager (terminate the thread pool)
-        gameRoomManager.shutdown();
+        // gameRoomManager.shutdown();
 	}
 
     public static void createPlayer(PlayerService playerService, String name, String id) {

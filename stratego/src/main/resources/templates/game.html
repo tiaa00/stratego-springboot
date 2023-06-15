@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,15 +22,184 @@
 
     <script src="../static/js/script.js"></script>
 
-    <div class="container">
-        <div class="wrapper">
-            <div class="grid-container">
+    <h1>Session Data: <span th:text="${session['username']} ?: ${username}"></span></h1>
+    <br><br>
 
+    <div class="container" style="display: flex;">
+
+        <div class="grid-container" id="board" style="background-image: url('../static/images/background_normal.png');">
+            <div class="grid-item" id="cell1"></div>
+            <div class="grid-item" id="cell2"></div>
+            <div class="grid-item" id="cell3"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item" id="cell4"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+        </div>
+
+        <div class="chat-container">
+            <div class="message-list">
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Hey, how are you?</p>
+                        <span class="message-time">10:30 AM</span>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>I'm good, thanks for asking!</p>
+                        <span class="message-time">10:35 AM</span>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Hey, how are you?</p>
+                        <span class="message-time">10:30 AM</span>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>I'm good, thanks for asking!</p>
+                        <span class="message-time">10:35 AM</span>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Hey, how are you?</p>
+                        <span class="message-time">10:30 AM</span>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>I'm good, thanks for asking!</p>
+                        <span class="message-time">10:35 AM</span>
+                    </div>
+                </div>
+                <!-- Add more message divs as needed -->
+            </div>
+            <div class="input-area">
+                <input type="text" placeholder="Type your message..." />
+                <button>Send</button>
             </div>
         </div>
 
     </div>
 
+    <div class="container">
+        <div class="wrapper">
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" style="width: 600px;">
+                <option selected>Select piece</option>
+                <option value="1">Bomb</option>
+                <option value="2">Marshal</option>
+                <option value="3">General</option>
+                <option value="4">Colonel</option>
+                <option value="5">Major</option>
+                <option value="6">Captain</option>
+                <option value="7">Liutenant</option>
+                <option value="8">Sergeant</option>
+                <option value="9">Miner</option>
+                <option value="10">Scout</option>
+                <option value="11">Spy</option>
+                <option value="12">Flag</option>
+            </select>
+        </div>
+    </div>
+
+
+
 </body>
 
-</html> -->
+</html>
