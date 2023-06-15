@@ -1,8 +1,5 @@
 package spring.stratego;
 
-import java.util.Map;
-import java.util.Scanner;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -10,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import spring.stratego.model.Chat;
@@ -25,25 +19,21 @@ import spring.stratego.service.PlayerService;
 @Controller
 public class StrategoApplication {
 
-    private static final GameRoomManager gameRoomManager = new GameRoomManager();
-	public static void main(String[] args) {
-        // Create and run Spring Boot application
-        ConfigurableApplicationContext context = SpringApplication.run(StrategoApplication.class, args);
-        PlayerService playerService = context.getBean(PlayerService.class);
-        ChatService chatService = context.getBean(ChatService.class);
+    private final PlayerService playerService;
 
-        //CRUD
-        // Create and insert a player
-        createPlayer(playerService, "Munir", "3");
-        // Create a chat
-        createChat(chatService, "Hello, how are you?", "1");
-        // Retrieve Chat By ID
-        getChatById(chatService, "1");
-        // Retrieve a player by ID
-        getPlayerById(playerService, "3");
+    private static final GameRoomManager gameRoomManager = new GameRoomManager();
+
+    public StrategoApplication(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
+    public static void main(String[] args) {
+        // Create and run Spring Boot application
+        SpringApplication.run(StrategoApplication.class, args);
+
 	}
 
-    public static void createPlayer(PlayerService playerService, String name, String id) {
+    private void createPlayer(String name, String id) {
         Player player = new Player();
         player.setName(name);
         player.setId(id);
@@ -90,6 +80,7 @@ public class StrategoApplication {
     @PostMapping("/lobby")
     public String showLobby(Model model, @RequestParam String username, HttpSession session) {
         // method to store into database.
+        createPlayer(username, session.toString());
         session.setAttribute("username", username);
         model.addAttribute("username", username);
         return "lobby";
