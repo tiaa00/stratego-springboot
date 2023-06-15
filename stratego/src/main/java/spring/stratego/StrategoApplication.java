@@ -40,9 +40,6 @@ public class StrategoApplication {
         getChatById(chatService, "1");
         // Retrieve a player by ID
         getPlayerById(playerService, "3");
-        // Close the application context
-        context.close();
-
 
 		GameRoomManager gameRoomManager = new GameRoomManager();
 
