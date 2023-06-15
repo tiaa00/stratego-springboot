@@ -1,12 +1,12 @@
 .center {
-    /* border: 5px solid; */
-    margin: auto;
-    width: 50%;
-    padding: 5px;
-    text-align: center;
-  }
+	/* border: 5px solid; */
+	margin: auto;
+	width: 50%;
+	padding: 5px;
+	text-align: center;
+}
 
-  .wrapper {
+.wrapper {
 	margin-top: 10px;
 	margin-bottom: 100px;
 }
@@ -17,15 +17,6 @@
 	margin: 0 auto;
 	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-	margin-bottom: 30px;
-}
-
-.form-signin .checkbox {
-	font-weight: normal;
 }
 
 .form-signin .form-control {
@@ -44,12 +35,56 @@
 
 .form-signin input[type="text"] {
 	margin-bottom: -1px;
-	/* border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0; */
 }
 
 .form-signin input[type="password"] {
 	margin-bottom: 20px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
+}
+
+.drag-over {
+	border: 2px dashed gray;
+}
+
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	/* Create 10 columns with equal width */
+	grid-template-rows: repeat(10, 1fr);
+	/* Create 10 rows with equal height */
+	width: 600px;
+	/* Adjust the width and height of the container to fit the grid */
+	height: 600px;
+	/* border: 1px solid #000; */
+	/* Add a border around the entire grid */
+}
+
+.grid-cell {
+	background-color: #ffffff;
+	/* Set the default background color of each grid cell */
+	border: 1px solid #000000;
+	/* Add a border to each grid cell */
+}
+
+.grid-cell:nth-child(odd) {
+	background-color: #999999;
+	/* Set a different background color for alternate cells */
+}
+
+.grid-cell.movable {
+	background-color: #ffcc66;
+	/* Set a specific background color for movable cells */
+}
+
+.grid-container::before,
+.grid-container::after,
+.grid-cell::before,
+.grid-cell::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 1px solid #000000;
+	/* Add a border to each grid cell */
 }
