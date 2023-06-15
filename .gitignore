@@ -1,0 +1,5 @@
+stratego/.vscode
+stratego/target/
+stratego/target/**
+stratego/.idea/
+stratego/.idea/**
