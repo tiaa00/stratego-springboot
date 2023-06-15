@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
+import spring.stratego.model.Player;
+import spring.stratego.service.PlayerService;
 
 @SpringBootApplication
 @Controller
 public class StrategoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StrategoApplication.class, args);
+        // Create and run Spring Boot application
+        ConfigurableApplicationContext context = SpringApplication.run(StrategoApplication.class, args);
+        PlayerService playerService = context.getBean(PlayerService.class);
+
+        // Create and insert a player
+        createPlayer(playerService, "Munir", "3");
+
+        // Close the application context
+        context.close();
 		GameRoomManager gameRoomManager = new GameRoomManager();
+
+
 
         // Create a game room
 		// roomID suppossedly auto generated  by database
@@ -80,6 +93,17 @@ public class StrategoApplication {
         // Shutdown the game room manager (terminate the thread pool)
         gameRoomManager.shutdown();
 	}
+
+    public static void createPlayer(PlayerService playerService, String name, String id) {
+        Player player = new Player();
+        player.setName(name);
+        player.setId(id);
+        Player createdPlayer = playerService.createPlayer(player);
+        System.out.println("Created Player: " + createdPlayer);
+    }
+
+
+
 
     // @PostMapping("/submit")
     // public String handleUserSubmit(@RequestParam String username, RedirectAttributes redirectAttributes) {
