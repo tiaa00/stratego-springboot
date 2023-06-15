@@ -1,5 +1,4 @@
 .center {
-	/* border: 5px solid; */
 	margin: auto;
 	width: 50%;
 	padding: 5px;
@@ -46,35 +45,107 @@
 	width: 600px;
 	/* Adjust the width and height of the container to fit the grid */
 	height: 600px;
-	/* border: 1px solid #000; */
+	border: 1px solid #000;
 	/* Add a border around the entire grid */
+	background-position: center;
+	flex-direction: row;
 }
 
-.grid-cell {
-	background-color: #ffffff;
-	/* Set the default background color of each grid cell */
+.grid-item {
 	border: 1px solid #000000;
 	/* Add a border to each grid cell */
-}
-
-.grid-cell:nth-child(odd) {
-	background-color: #999999;
-	/* Set a different background color for alternate cells */
-}
-
-.grid-cell.movable {
-	background-color: #ffcc66;
-	/* Set a specific background color for movable cells */
+	text-align: center;
 }
 
 .grid-container::before,
 .grid-container::after,
-.grid-cell::before,
-.grid-cell::after {
-	content: "";
+.grid-item::before,
+.grid-item::after {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	border: 1px solid #000000;
 	/* Add a border to each grid cell */
+}
+
+.grid {
+	width: 500px;
+	height: 500px;
+	display: grid;
+	flex-direction: row;
+	margin: auto;
+	border: 1px solid #000000;
+	align-items: center;
+}
+
+.chat-container {
+	width: 400px;
+	height: 500px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+
+.message-list {
+	flex-grow: 1;
+	overflow-y: auto;
+	display: flex; /* Add this property */
+	flex-direction: column; /* Add this property */
+
+}
+
+.message {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 10px;
+}
+
+.received .message-content {
+	background-color: #f2f2f2;
+	border-radius: 5px;
+	padding: 8px;
+}
+
+.sent{
+	align-self: flex-end;
+}
+
+.sent .message-content {
+	background-color: #dcf8c6;
+	border-radius: 5px;
+	padding: 8px;
+}
+
+.message-time {
+	font-size: 0.8em;
+	color: #999;
+}
+
+.input-area {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.input-area input {
+	flex-grow: 1;
+	padding: 8px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+
+.input-area button {
+	margin-left: 10px;
+	padding: 8px 12px;
+	background-color: #4CAF50;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.input-area button:hover {
+	background-color: #45a049;
 }

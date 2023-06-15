@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -39,17 +39,11 @@
           </tr>
         </thead>
         <tbody id="data-table-body">
-          <tr>
-            <th >1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td><a class="btn btn-primary" href="game.html">Join</a></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td><a class="btn btn-primary" href="game.html">Join</a></td>
+          <tr th:each="room : ${room}">
+            <th th:text="room_name">1</th>
+            <td th:text="player_name">Mark</td>
+            <td th:text="player_count">Otto</td>
+            <td><a class="btn btn-primary" href="#" th:href="@{/game?{room_id}}">Join</a></td>
           </tr>
         </tbody>
       </table>
@@ -65,15 +59,15 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form-signin">
+          <form class="form-signin" th:object="${player}">
             <br>
             <input type="text" class="form-control" name="roomname" placeholder="Room Name" required="required"
-                autofocus="" />
+                autofocus="" th:field="room_name" />
         </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onsubmit="">Create</button>
+          <button type="button" class="btn btn-primary">Create</button>
         </div>
       </div>
     </div>
