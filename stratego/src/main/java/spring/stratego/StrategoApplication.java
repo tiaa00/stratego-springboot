@@ -25,6 +25,7 @@ import spring.stratego.service.PlayerService;
 @Controller
 public class StrategoApplication {
 
+    private static final GameRoomManager gameRoomManager = new GameRoomManager();
 	public static void main(String[] args) {
         // Create and run Spring Boot application
         ConfigurableApplicationContext context = SpringApplication.run(StrategoApplication.class, args);
@@ -158,4 +159,36 @@ public class StrategoApplication {
         return "index";
     }
 
+    //optional to use(?)
+    public static void createGameRooms(){
+        // Create a game room
+		// roomID suppossedly auto generated  by database
+        gameRoomManager.createGameRoom("room1");
+		// gameRoomManager.createGameRoom("room2");
+        // gameRoomManager.createGameRoom("room3");
+    }
+
+    //optional to use(?)
+    public static void joinGameRoomAndPlay(String roomID, String player1, String player2){
+        //to check the player is join the room or not
+        boolean join1 = gameRoomManager.joinGameRoom(roomID, player1);
+        boolean join2 = gameRoomManager.joinGameRoom(roomID, player2);
+        if(join1 && join2){
+            GameRoom games = new GameRoom(roomID);
+            System.out.println(player1+ " "+ player2+ " join "+ roomID);
+        }else{
+            System.out.println("not enough player....wait");
+        }
+    }
+
+    @PostMapping("/exit")
+    public void handleExitButton(){
+        exitGame();
+    }
+
+    public static void exitGame(){
+        gameRoomManager.shutdown();
+        System.out.println("Game exited");
+        System.exit(0); //to forcefully terminate the application
+    }
 }
