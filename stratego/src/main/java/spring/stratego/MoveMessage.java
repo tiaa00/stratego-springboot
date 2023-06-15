@@ -1,5 +1,6 @@
 package spring.stratego;
 
+@Entity
 public class MoveMessage {
     private String sessionId;
     private int sourceX;

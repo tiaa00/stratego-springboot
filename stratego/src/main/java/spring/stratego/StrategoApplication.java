@@ -113,8 +113,8 @@ public class StrategoApplication {
         System.exit(0); //to forcefully terminate the application
     }
 
-    @GetMapping("/game")
-    public String gameRoom(Model model) {
+    @GetMapping("/game/{roomID}")
+    public String gameRoom(Model model, @RequestParam String roomID, HttpSession session) {
         return "game";
     }
 }

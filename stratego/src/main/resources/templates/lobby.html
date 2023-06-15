@@ -59,7 +59,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form-signin" th:object="${player}">
+        <form id="createRoomForm" class="form-signin" th:object="${player}">
             <br>
             <input type="text" class="form-control" name="roomname" placeholder="Room Name" required="required"
                 autofocus="" th:field="room_name" />
@@ -67,11 +67,38 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Create</button>
+          <button onclick="createNewGame()" type="button" class="btn btn-primary">Create</button>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    function createNewGame() {
+      // Get the room name from the form input
+      var roomName = document.getElementById("createRoomForm").elements["roomname"].value;
+  
+      console.log("Room name:", roomName);
+      // Create the query string parameter
+      var queryString = "?roomName=" + encodeURIComponent(roomName);
+  
+      // Send a GET request to the "/newGame" endpoint
+      fetch("/newGame" + queryString)
+        .then(response => response.text())
+        .then(roomId => {
+          // Request successful
+          console.log("Room ID:", roomId);
+          // Handle the response here
+          window.location.href = "/game/" + roomId;
+        })
+        .catch(error => {
+          // Request failed
+          console.error("Error:", error);
+          // Handle the error here
+        });
+    }
+  </script>
+  
 
 
 </body>
