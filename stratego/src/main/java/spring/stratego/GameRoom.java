@@ -68,8 +68,6 @@ class GameRoom {
         }
     }
 
-
-
     private boolean validateMove(int fromX, int fromY, int destX, int destY) {
         //validate the move based on the game rules
         //add logic
@@ -80,11 +78,11 @@ class GameRoom {
         }
 
         // Check if the piece at the source coordinates belongs to the current player
-        Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-        if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn % 2))) {
-            System.out.println("Invalid source piece");
-            return false;
-        }
+        // Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
+        // if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn % 2))) {
+        //     System.out.println("Invalid source piece");
+        //     return false;
+        // }
 
         if (!isAdjacent(fromX, fromY, destX, destY)) {
             return false; //cannot move
@@ -106,25 +104,51 @@ class GameRoom {
         return (dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 1 && dy == 1);
     }
 
-    private void updateGameState(int fromX, int fromY, int destX, int destY) {
+    private Board updateGameState(int fromX, int fromY, int destX, int destY) {
     // Move the piece from the source square to the destination square
     Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-    board.setPieceAtCoordinate(destX, destY, sourcePiece);
-    board.setPieceAtCoordinate(fromX, fromY, null);
+    Piece destPiece = board.getPieceAtCoordinate(destX, destY);
 
+    //if the destPiece is vacant
+    if(destPiece==null){
+        board.setPieceAtCoordinate(destX, destY, sourcePiece); //moved the piece
+        board.setPieceAtCoordinate(fromX, fromY, null);
+    } 
+    
     // Check if the destination square contains a bomb piece
-    if (sourcePiece instanceof BombPiece) {
+    if (destPiece instanceof Bomb) {
         // Remove the piece from the game board
         board.setPieceAtCoordinate(destX, destY, null);
-        System.out.println("Player encountered a bomb! Piece removed.");
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        sourcePiece.setTotalPiece(1);
+        destPiece.setTotalPiece(1);
+        // System.out.println("Player encountered a bomb! Piece removed.");
     }
-
+    
     // Check if the destination square contains a flag piece
-    if (sourcePiece instanceof FlagPiece) {
+    if (destPiece instanceof Flag) {
         // The player has won the game
         // System.out.println( getplayer+ " captured the flag! Game over. Player wins!");
+        destPiece.setTotalPiece(1); 
         gameState = "Game Over";
     }
+
+    //check rank between the pieces
+    if(sourcePiece.getRank()>destPiece.getRank()){
+        board.setPieceAtCoordinate(destX, destY, sourcePiece); //moved the piece
+        board.setPieceAtCoordinate(fromX, fromY, null); //vacant the source coordinate
+        destPiece.setTotalPiece(1); 
+    }else if(sourcePiece.getRank()<destPiece.getRank()){ // opponent win-> player lost their piece
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        sourcePiece.setTotalPiece(1);
+    }else{ //both of the pieces from the same rank
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        board.setPieceAtCoordinate(destX, destY, null);
+        sourcePiece.setTotalPiece(1);
+        destPiece.setTotalPiece(1);
+    }
+
+    return board;
 }
 
 }
