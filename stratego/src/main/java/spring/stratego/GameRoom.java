@@ -2,6 +2,7 @@ package spring.stratego;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import spring.stratego.model.Player;
@@ -12,19 +13,15 @@ class GameRoom {
     private List<Player> players;
     private String gameState;
     private Lock turnLock; //to ensure only one thread can modify it at a time
-    private int turn;
+    private AtomicInteger turn;
     private Board board;
-    
-    // TODO use Player object List<Player> instead of String
-    // private Player player1;
-    // private Player player2;
 
     public GameRoom(String roomId) {
         this.roomId = roomId;
         this.players = new ArrayList<>();
         this.gameState = "Waiting"; // Initial game state
         this.turnLock = new ReentrantLock();
-        this.turn = 0;
+        this.turn = new AtomicInteger(0);
         this.board = new Board();
     }
 
@@ -46,7 +43,7 @@ class GameRoom {
     }
 
     public boolean isPlayerturn(Player player){
-        return players.indexOf(player) == turn %2;
+        return players.indexOf(player) == turn.get() %2;
     }
 
     public void makeMove(Player player, int fromX, int fromY, int destX, int destY){
@@ -63,19 +60,18 @@ class GameRoom {
             }
 
             //increment the turn counter
-            turn++;
+            turn.incrementAndGet();
             // Notify the opponent that it's their turn
-            String opponent = players.get((turn % 2 + 1) % 2).getName();
+            String opponent = players.get((turn.get() % 2 + 1) % 2).getName();
             System.out.println(opponent + "'s turn.");
         }finally{
-            //release the turnLock after accessing or modifying the tuern varible
+            //release the turnLock after accessing or modifying the turn varible
             turnLock.unlock();
         }
     }
 
     private boolean validateMove(int fromX, int fromY, int destX, int destY) {
         //validate the move based on the game rules
-        //add logic
         //Check if the source and destination coordinates are within the game board bounds
         if (!board.isValidCoordinate(fromX, fromY) || !board.isValidCoordinate(destX, destY)) {
             System.out.println("Invalid coordinates");
@@ -84,7 +80,7 @@ class GameRoom {
 
         // Check if the piece at the source coordinates belongs to the current player
         Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-        if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn % 2))) {
+        if (sourcePiece == null || !sourcePiece.getPlayer().equals(players.get(turn.get() % 2))) {
             System.out.println("Invalid source piece");
             return false;
         }
@@ -109,7 +105,7 @@ class GameRoom {
         return (dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 1 && dy == 1);
     }
 
-    private Board updateGameState(int fromX, int fromY, int destX, int destY) {
+    private synchronized Board updateGameState(int fromX, int fromY, int destX, int destY) {
     // Move the piece from the source square to the destination square
     Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
     Piece destPiece = board.getPieceAtCoordinate(destX, destY);
