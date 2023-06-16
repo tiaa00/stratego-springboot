@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.springframework.stereotype.Service;
+
 import spring.stratego.model.Player;
 
-// GameRoomManager class for managing game rooms
+@Service
 class GameRoomManager {
     private Map<String, GameRoom> gameRooms;
     private ExecutorService roomCreationExecutor;
