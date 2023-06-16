@@ -1,18 +1,20 @@
 package spring.stratego;
 
+import spring.stratego.model.Player;
+
 interface Piece {
     public abstract int getRank();
     void setTotalPiece(int total);
     int getTotalPiece();
-    Object getPlayer();
+    Player getPlayer();
 }
 
 class Marshal implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
+    private Player player;
     // GameRoom player =
-    public Marshal(Object player){
+    public Marshal(Player player){
         this.rank=10;
         this.totalPiece=1;
         this.player = player;
@@ -30,7 +32,7 @@ class Marshal implements Piece {
         return totalPiece;
     }
 
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -38,8 +40,8 @@ class Marshal implements Piece {
 class General implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public General(Object player){
+    private Player player;
+    public General(Player player){
         this.rank=9;
         this.totalPiece=1;
         this.player = player;
@@ -57,7 +59,7 @@ class General implements Piece {
         return totalPiece;
     }
 
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -65,8 +67,8 @@ class General implements Piece {
 class Colonel implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Colonel(Object player){
+    private Player player;
+    public Colonel(Player player){
         this.rank=8;
         this.totalPiece=2;
         this.player = player;
@@ -84,7 +86,7 @@ class Colonel implements Piece {
         return totalPiece;
     }
 
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -92,8 +94,8 @@ class Colonel implements Piece {
 class Major implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Major(Object player){
+    private Player player;
+    public Major(Player player){
         this.rank=7;
         this.totalPiece=3;
         this.player = player;
@@ -111,7 +113,7 @@ class Major implements Piece {
         return totalPiece;
     }
 
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -119,8 +121,8 @@ class Major implements Piece {
 class Captain implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Captain(Object player){
+    private Player player;
+    public Captain(Player player){
         this.rank=6;
         this.totalPiece=4;
         this.player = player;
@@ -137,7 +139,7 @@ class Captain implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -145,8 +147,8 @@ class Captain implements Piece {
 class Lieutenants implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Lieutenants(Object player){
+    private Player player;
+    public Lieutenants(Player player){
         this.rank=5;
         this.totalPiece=4;
         this.player = player;
@@ -163,7 +165,7 @@ class Lieutenants implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -171,8 +173,8 @@ class Lieutenants implements Piece {
 class Sergeants implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Sergeants(Object player){
+    private Player player;
+    public Sergeants(Player player){
         this.rank=4;
         this.totalPiece=4;
         this.player = player;
@@ -189,7 +191,7 @@ class Sergeants implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -197,7 +199,7 @@ class Sergeants implements Piece {
 class Miners implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
+    private Player player;
     public Miners(){
         this.rank=3;
         this.totalPiece=5;
@@ -214,7 +216,7 @@ class Miners implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -222,8 +224,8 @@ class Miners implements Piece {
 class Scouts implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Scouts(Object player){
+    private Player player;
+    public Scouts(Player player){
         this.rank=2;
         this.totalPiece=8;
         this.player = player;
@@ -240,7 +242,7 @@ class Scouts implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -248,8 +250,8 @@ class Scouts implements Piece {
 class Spy implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Spy(Object player){
+    private Player player;
+    public Spy(Player player){
         this.rank=1;
         this.totalPiece=1;
         this.player = player;
@@ -266,7 +268,7 @@ class Spy implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -274,8 +276,8 @@ class Spy implements Piece {
 class Bomb implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Bomb(Object player){
+    private Player player;
+    public Bomb(Player player){
         this.rank=20;
         this.totalPiece=6;
         this.player = player;
@@ -292,7 +294,7 @@ class Bomb implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
@@ -300,8 +302,8 @@ class Bomb implements Piece {
 class Flag implements Piece {
     private int rank;
     private int totalPiece;
-    private Object player;
-    public Flag(Object player){
+    private Player player;
+    public Flag(Player player){
         this.rank=0;
         this.totalPiece=1;
         this.player = player;
@@ -318,7 +320,7 @@ class Flag implements Piece {
     public int getTotalPiece(){
         return totalPiece;
     }
-    public Object getPlayer(){
+    public Player getPlayer(){
         return player;
     }
 }
