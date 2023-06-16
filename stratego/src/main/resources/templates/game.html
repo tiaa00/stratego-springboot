@@ -23,13 +23,11 @@
 <body>
     <button onclick="sendMoveMessage()">Send Move</button>
     <button onclick="sendChatMessage()">Send Chat Message</button>
-
-    <h1>Session Data: <span th:text="${session['username']} ?: ${username}"></span></h1>
     <br><br>
 
     <div class="container" style="display: flex;">
 
-        <div class="grid-container" id="board" style="background-image: url('../static/images/background_normal.png');">
+        <div class="grid-container" id="board" style="background-image: url('/images/background_normal.png');">
 
             <div class="grid-item" id="row-1-col-1"></div>
             <div class="grid-item" id="row-1-col-2"></div>
