@@ -91,10 +91,11 @@ public class GameController {
         session.setAttribute("username", username);
         session.setAttribute("player", player1);
 
+
         GameRoom[] gameRooms = gameRoomManager.getGameRooms();
         System.out.println("Game Rooms size: " + gameRooms.length);
         model.addAttribute("gameRooms", gameRooms);
-        return "lobby";
+        return "redirect:/lobby";
     }
 
     @GetMapping("/lobby")

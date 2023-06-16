@@ -23,9 +23,9 @@
   <div class="container">
     <div class="wrapper">
       <br><br>
-      <h1>Welcome <span th:text="${session.username != null ? session.username : username}">!</span></h1>
+      <h1>Welcome, <span th:text="${session.username != null ? session.username : username}"></span>!</h1>
       <div>
-        <h4 style="float: left;">Rooms</h4>
+        <!-- <h4 style="float: left;">Rooms</h4> -->
         <button class="btn btn-primary" style="float: right;"  data-bs-toggle="modal" data-bs-target="#createRoom">Create New Room</button>
       </div><br><br>
 
