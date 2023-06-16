@@ -18,7 +18,7 @@
 </head>
 
 <body>
-  <h1>Session Data: <span th:text="${session['username']} ?: ${username}"></span></h1>
+  <h1>Session Data: <span th:text="${session.username != null ? session.username : username}"></span></h1>
   <script src="./js/script.js"></script>
 
   <div class="container">
@@ -39,11 +39,11 @@
           </tr>
         </thead>
         <tbody id="data-table-body">
-          <tr th:each="room : ${room}">
+          <tr th:each="room : ${rooms}">
             <th th:text="room_name">1</th>
             <td th:text="player_name">Mark</td>
             <td th:text="player_count">Otto</td>
-            <td><a class="btn btn-primary" href="#" th:href="@{/game?{room_id}}">Join</a></td>
+            <td><a class="btn btn-primary" href="#" th:href="@{/game/{id}(id=${room})}">Join</a></td>
           </tr>
         </tbody>
       </table>
@@ -58,48 +58,20 @@
           <h5 class="modal-title" id="exampleModalLabel">Create New Room</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-        <form id="createRoomForm" class="form-signin" th:object="${player}">
+        <form id="createRoomForm" class="form-signin" th:object="${player}" action="/createGameRoom" method="POST">
+          <div class="modal-body">
             <br>
             <input type="text" class="form-control" name="roomname" placeholder="Room Name" required="required"
-                autofocus="" th:field="room_name" />
-        </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button onclick="createNewGame()" type="button" class="btn btn-primary">Create</button>
-        </div>
+                autofocus="" />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
       </div>
     </div>
   </div>
-
-  <script>
-    function createNewGame() {
-      // Get the room name from the form input
-      var roomName = document.getElementById("createRoomForm").elements["roomname"].value;
-  
-      console.log("Room name:", roomName);
-      // Create the query string parameter
-      var queryString = "?roomName=" + encodeURIComponent(roomName);
-  
-      // Send a GET request to the "/newGame" endpoint
-      fetch("/newGame" + queryString)
-        .then(response => response.text())
-        .then(roomId => {
-          // Request successful
-          console.log("Room ID:", roomId);
-          // Handle the response here
-          window.location.href = "/game/" + roomId;
-        })
-        .catch(error => {
-          // Request failed
-          console.error("Error:", error);
-          // Handle the error here
-        });
-    }
-  </script>
-  
-
 
 </body>
 

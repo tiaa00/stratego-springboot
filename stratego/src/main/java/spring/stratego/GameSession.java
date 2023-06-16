@@ -6,11 +6,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import spring.stratego.model.Player;
 
 @Controller
 public class GameSession {
@@ -34,15 +37,17 @@ public class GameSession {
      * Input from client: takde
      * Output to client: sessionId
      */
-    @GetMapping("/newGame")
-    public ResponseEntity<String> createRoom(HttpSession session, @RequestParam("roomName") String roomName) {
-        System.out.println("Creating new game room with name " + roomName);
+    @PostMapping("/createGameRoom")
+    public String createRoom(@ModelAttribute("player") String player, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "error";
+        }
         int roomId = gameRoomCounter++;
         gameRoom = new GameRoom(String.valueOf(roomId));
         session.setAttribute("roomId", roomId);
-        return ResponseEntity.ok(String.valueOf(roomId));
+        session.setAttribute("player", player);
+        return "redirect:/game/" + roomId;
     }
-
 
     /*
      * Join room endpoint

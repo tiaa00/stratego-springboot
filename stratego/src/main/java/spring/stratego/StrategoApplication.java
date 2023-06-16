@@ -72,6 +72,8 @@ public class StrategoApplication {
         createPlayer(username, session.toString());
         session.setAttribute("username", username);
         model.addAttribute("username", username);
+        String[] rooms = {"room1", "room2", "room3"};
+        model.addAttribute("rooms", rooms);
         return "lobby";
     }
 
@@ -121,10 +123,11 @@ public class StrategoApplication {
 
     @GetMapping("/game/{roomID}")
     public String gameRoom(Model model, @PathVariable String roomID, HttpSession session) {
-        String sessionId = session.getId();
+        System.out.println("Room ID: " + roomID);
         
-        if (roomID.equals(sessionId)) {
-            return "redirect:/game.html";
+        if (roomID != null) {
+            // Add model attributes needed for template 
+            return "game";
         } else {
             // Handle invalid room ID
             return "error";
