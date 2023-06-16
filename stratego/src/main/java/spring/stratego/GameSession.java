@@ -1,14 +1,22 @@
 package spring.stratego;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class GameSession {
+    GameRoom gameRoom;
 
-    private int counter = 0;
+    private int gameRoomCounter = 0;
 
     @MessageMapping("/game/{sessionId}/move")
     // @MessageMapping("/game")
@@ -17,7 +25,7 @@ public class GameSession {
         System.out.println("Received move message from session " + sessionId + " " + moveMessage);
 
         // convert int to String
-        return String.valueOf("Move " + counter++);
+        return String.valueOf("Move " + gameRoomCounter++);
         
     }
 
@@ -26,6 +34,14 @@ public class GameSession {
      * Input from client: takde
      * Output to client: sessionId
      */
+    @GetMapping("/newGame")
+    public ResponseEntity<String> createRoom(HttpSession session, @RequestParam("roomName") String roomName) {
+        System.out.println("Creating new game room with name " + roomName);
+        int roomId = gameRoomCounter++;
+        gameRoom = new GameRoom(String.valueOf(roomId));
+        session.setAttribute("roomId", roomId);
+        return ResponseEntity.ok(String.valueOf(roomId));
+    }
 
 
     /*
@@ -33,19 +49,6 @@ public class GameSession {
      * Input from client: sessionId:
      * Output to client: boolean true/false
      */
-
-    /*
-     * Chat endpoint
-     * Input from client: chatContent
-     * Output to client: chatContent
-     */
-    @MessageMapping("/game/{sessionId}/chat")
-    @SendTo("/topic/game/{sessionId}")
-    public ChatMessage handleChatMessage(@DestinationVariable String sessionId, ChatMessage chatMessage) {
-        System.out.println("Received chat message from session " + sessionId + " " + chatMessage);
-
-        return chatMessage;
-    }
 
     /*
      * GameBoard endpoint

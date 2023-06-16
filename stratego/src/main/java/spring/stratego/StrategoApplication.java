@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -113,8 +114,20 @@ public class StrategoApplication {
         System.exit(0); //to forcefully terminate the application
     }
 
-    @GetMapping("/game")
-    public String gameRoom(Model model) {
-        return "game";
+    // @GetMapping("/game/{roomID}")
+    // public String gameRoom(Model model, @RequestParam String roomID, HttpSession session) {
+    //     return "game";
+    // }
+
+    @GetMapping("/game/{roomID}")
+    public String gameRoom(Model model, @PathVariable String roomID, HttpSession session) {
+        String sessionId = session.getId();
+        
+        if (roomID.equals(sessionId)) {
+            return "redirect:/game.html";
+        } else {
+            // Handle invalid room ID
+            return "error";
+        }
     }
 }
