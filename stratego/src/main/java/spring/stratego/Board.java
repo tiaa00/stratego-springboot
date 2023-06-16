@@ -16,8 +16,8 @@ class Board {
         return gameBoard[x][y];
     }
 
-    public void setPieceAtCoordinate(int x, int y, Piece piece) {
-        gameBoard[x][y] = piece;
+    public Piece setPieceAtCoordinate(int x, int y, Piece piece) {
+        return gameBoard[x][y] = piece;
     }
 }
 

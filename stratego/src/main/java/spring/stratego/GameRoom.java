@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import spring.stratego.model.Player;
 
 // GameRoom class representing a game room
 class GameRoom {
     private String roomId;
-    private List<String> players;
+    private List<Player> players;
     private String gameState;
     private Lock turnLock; //to ensure only one thread can modify it at a time
     private int turn;
@@ -31,7 +32,7 @@ class GameRoom {
         return roomId;
     }
 
-    public List<String> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -40,15 +41,15 @@ class GameRoom {
         return gameState;
     }
 
-    public void addPlayer(String player) {
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
-    public boolean isPlayerturn(String player){
+    public boolean isPlayerturn(Player player){
         return players.indexOf(player) == turn %2;
     }
 
-    public void makeMove(String player, int fromX, int fromY, int destX, int destY){
+    public void makeMove(Player player, int fromX, int fromY, int destX, int destY){
         turnLock.lock();
         try{
             if(isPlayerturn(player)){
@@ -64,15 +65,13 @@ class GameRoom {
             //increment the turn counter
             turn++;
             // Notify the opponent that it's their turn
-            String opponent = players.get((turn % 2 + 1) % 2);
+            String opponent = players.get((turn % 2 + 1) % 2).getName();
             System.out.println(opponent + "'s turn.");
         }finally{
             //release the turnLock after accessing or modifying the tuern varible
             turnLock.unlock();
         }
     }
-
-
 
     private boolean validateMove(int fromX, int fromY, int destX, int destY) {
         //validate the move based on the game rules
@@ -110,25 +109,51 @@ class GameRoom {
         return (dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 1 && dy == 1);
     }
 
-    private void updateGameState(int fromX, int fromY, int destX, int destY) {
-        // Move the piece from the source square to the destination square
-        Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
-        board.setPieceAtCoordinate(destX, destY, sourcePiece);
+    private Board updateGameState(int fromX, int fromY, int destX, int destY) {
+    // Move the piece from the source square to the destination square
+    Piece sourcePiece = board.getPieceAtCoordinate(fromX, fromY);
+    Piece destPiece = board.getPieceAtCoordinate(destX, destY);
+
+    //if the destPiece is vacant
+    if(destPiece==null){
+        board.setPieceAtCoordinate(destX, destY, sourcePiece); //moved the piece
         board.setPieceAtCoordinate(fromX, fromY, null);
-
-        // Check if the destination square contains a bomb piece
-        if (sourcePiece instanceof BombPiece) {
-            // Remove the piece from the game board
-            board.setPieceAtCoordinate(destX, destY, null);
-            System.out.println("Player encountered a bomb! Piece removed.");
-        }
-
-        // Check if the destination square contains a flag piece
-        if (sourcePiece instanceof FlagPiece) {
-            // The player has won the game
-            // System.out.println( getplayer+ " captured the flag! Game over. Player wins!");
-            gameState = "Game Over";
-        }
+    } 
+    
+    // Check if the destination square contains a bomb piece
+    if (destPiece instanceof Bomb) {
+        // Remove the piece from the game board
+        board.setPieceAtCoordinate(destX, destY, null);
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        sourcePiece.setTotalPiece(1);
+        destPiece.setTotalPiece(1);
+        // System.out.println("Player encountered a bomb! Piece removed.");
     }
+    
+    // Check if the destination square contains a flag piece
+    if (destPiece instanceof Flag) {
+        // The player has won the game
+        // System.out.println( getplayer+ " captured the flag! Game over. Player wins!");
+        destPiece.setTotalPiece(1); 
+        gameState = "Game Over";
+    }
+
+    //check rank between the pieces
+    if(sourcePiece.getRank()>destPiece.getRank()){
+        board.setPieceAtCoordinate(destX, destY, sourcePiece); //moved the piece
+        board.setPieceAtCoordinate(fromX, fromY, null); //vacant the source coordinate
+        destPiece.setTotalPiece(1); 
+    }else if(sourcePiece.getRank()<destPiece.getRank()){ // opponent win-> player lost their piece
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        sourcePiece.setTotalPiece(1);
+    }else{ //both of the pieces from the same rank
+        board.setPieceAtCoordinate(fromX, fromY, null);
+        board.setPieceAtCoordinate(destX, destY, null);
+        sourcePiece.setTotalPiece(1);
+        destPiece.setTotalPiece(1);
+    }
+
+    return board;
+}
 
 }
