@@ -8,7 +8,8 @@ import spring.stratego.model.Player;
 
 // GameRoom class representing a game room
 class GameRoom {
-    private String roomId;
+    private String id;
+    private String name;
     private List<Player> players;
     private String gameState;
     private Lock turnLock; //to ensure only one thread can modify it at a time
@@ -19,8 +20,9 @@ class GameRoom {
     // private Player player1;
     // private Player player2;
 
-    public GameRoom(String roomId) {
-        this.roomId = roomId;
+    public GameRoom(String id, String name) {
+        this.id = id;
+        this.name = name;
         this.players = new ArrayList<>();
         this.gameState = "Waiting"; // Initial game state
         this.turnLock = new ReentrantLock();
@@ -28,8 +30,16 @@ class GameRoom {
         this.board = new Board();
     }
 
-    public String getRoomId() {
-        return roomId;
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String roomName) {
+        this.name = roomName;
     }
 
     public List<Player> getPlayers() {
@@ -41,12 +51,20 @@ class GameRoom {
         return gameState;
     }
 
+    public int getPlayerCount() {
+        return players.size();
+    }
+
     public void addPlayer(Player player) {
-        players.add(player);
+            players.add(player);
     }
 
     public boolean isPlayerturn(Player player){
         return players.indexOf(player) == turn %2;
+    }
+
+    public boolean playerIsInRoom(Player player) {
+        return players.contains(player);
     }
 
     public void makeMove(Player player, int fromX, int fromY, int destX, int destY){

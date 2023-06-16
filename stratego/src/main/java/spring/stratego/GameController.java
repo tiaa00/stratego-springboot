@@ -25,8 +25,6 @@ public class GameController {
     private final PlayerService playerService;
     private final GameRoomManager gameRoomManager;
 
-    private int gameRoomCounter = 0;
-
     public void exitGame(){
         gameRoomManager.shutdown();
         System.out.println("Game exited");
@@ -36,28 +34,6 @@ public class GameController {
     public GameController(PlayerService playerService, GameRoomManager gameRoomManager) {
         this.playerService = playerService;
         this.gameRoomManager = gameRoomManager;
-    }
-
-    //optional to use(?)
-    public void createGameRooms(){
-        // Create a game room
-        // roomID suppossedly auto generated  by database
-        gameRoomManager.createGameRoom("room1");
-        // gameRoomManager.createGameRoom("room2");
-        // gameRoomManager.createGameRoom("room3");
-    }
-    
-    //optional to use(?)
-    public void joinGameRoomAndPlay(String roomID, Player player1, Player player2){
-        //to check the player is join the room or not
-        boolean join1 = gameRoomManager.joinGameRoom(roomID, player1);
-        boolean join2 = gameRoomManager.joinGameRoom(roomID, player2);
-        if(join1 && join2){
-            GameRoom games = new GameRoom(roomID);
-            System.out.println(player1+ " "+ player2+ " join "+ roomID);
-        }else{
-            System.out.println("not enough player....wait");
-        }
     }
 
     private Player createPlayer(String name, String id) {
@@ -113,13 +89,19 @@ public class GameController {
         // method to store into database.
         Player player1 = createPlayer(username, session.toString());
         session.setAttribute("username", username);
-        model.addAttribute("player", player1);
-        Room[] rooms = {
-            new Room("0", "testName", player1, player1),
-            new Room("1", "testName", player1, null),
-            new Room("2", "testName", player1, null),
-        };
-        model.addAttribute("rooms", rooms);
+        session.setAttribute("player", player1);
+
+        GameRoom[] gameRooms = gameRoomManager.getGameRooms();
+        System.out.println("Game Rooms size: " + gameRooms.length);
+        model.addAttribute("gameRooms", gameRooms);
+        return "lobby";
+    }
+
+    @GetMapping("/lobby")
+    public String lobby(Model model, HttpSession session) {
+        GameRoom[] gameRooms = gameRoomManager.getGameRooms();
+        System.out.println("Game Rooms size: " + gameRooms.length);
+        model.addAttribute("gameRooms", gameRooms);
         return "lobby";
     }
 
@@ -129,15 +111,21 @@ public class GameController {
      * Output to client: sessionId
      */
     @PostMapping("/createGameRoom")
-    public String createGameRoom(@ModelAttribute("player") String player, HttpSession session, BindingResult bindingResult) {
+    // Get roomname input field from this POST request
+    public String createGameRoom(@ModelAttribute("roomname") String roomname, Model model, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "error";
         }
-        int roomId = gameRoomCounter++;
-        GameRoom gameRoom = new GameRoom(String.valueOf(roomId));
-        session.setAttribute("roomId", roomId);
-        session.setAttribute("player", player);
-        return "redirect:/game/" + roomId;
+        System.out.println("Creating game room with name: " + roomname);
+        Player currentPlayer = (Player) session.getAttribute("player");
+        GameRoom gameRoom = gameRoomManager.createGameRoom(roomname);
+    
+        gameRoomManager.joinGameRoom(gameRoom, currentPlayer);
+
+        session.setAttribute("roomId", gameRoom.getId());
+        session.setAttribute("player", currentPlayer);
+        session.setAttribute(roomname, gameRoom);
+        return "redirect:/game/" + gameRoom.getId();
     }
 
     /*
@@ -146,6 +134,24 @@ public class GameController {
      * Output to client: boolean true/false
      */
     @PostMapping("/joinGameRoom")
+    public String joinGameRoom(@ModelAttribute("roomId") String roomId, Model model, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "error";
+        }
+        System.out.println("Joining game room with id: " + roomId);
+        Player currentPlayer = (Player) session.getAttribute("player");
+        GameRoom gameRoom = gameRoomManager.getGameRoom(roomId);
+        if (gameRoom != null) {
+            gameRoomManager.joinGameRoom(gameRoom, currentPlayer);
+            session.setAttribute("roomId", gameRoom.getId());
+            session.setAttribute("player", currentPlayer);
+            session.setAttribute("roomname", gameRoom.getName());
+            session.setAttribute("gameRoom", gameRoom);
+            return "redirect:/game/" + gameRoom.getId();
+        } else {
+            return "error";
+        }
+    }
 
     /*
      * Game room endpoint
@@ -155,13 +161,16 @@ public class GameController {
     @GetMapping("/game/{roomID}")
     public String gameRoom(Model model, @PathVariable String roomID, HttpSession session) {
         System.out.println("Room ID: " + roomID);
+
+        Player currentPlayer = (Player) session.getAttribute("player");
+        GameRoom gameRoom = gameRoomManager.getGameRoom(roomID);
+
         
-        if (roomID != null) {
-            // Add model attributes needed for template 
+        if (gameRoom.playerIsInRoom(currentPlayer)) {
             return "game";
         } else {
             // Handle invalid room ID
-            return "error";
+            return "notInRoom";
         }
     }
 
@@ -171,7 +180,7 @@ public class GameController {
         System.out.println("Received move message from session " + sessionId + " " + moveMessage);
 
         // convert int to String
-        return String.valueOf("Move " + gameRoomCounter++);
+        return "handleMoveMessage";
         
     }
 
