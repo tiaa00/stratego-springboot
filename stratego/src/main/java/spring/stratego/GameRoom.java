@@ -11,6 +11,7 @@ import spring.stratego.model.Player;
 class GameRoom {
     private String id;
     private String name;
+    private String hostName;
     private List<Player> players;
     private String gameState;
     private Lock turnLock; //to ensure only one thread can modify it at a time
@@ -35,6 +36,10 @@ class GameRoom {
         return name;
     }
 
+    public String getHostName() {
+        return hostName;
+    }
+
     public void setName(String roomName) {
         this.name = roomName;
     }
@@ -53,7 +58,10 @@ class GameRoom {
     }
 
     public void addPlayer(Player player) {
-            players.add(player);
+        if (players.size() == 0) {
+            hostName = player.getName();
+        }
+        players.add(player);
     }
 
     public boolean isPlayerturn(Player player){

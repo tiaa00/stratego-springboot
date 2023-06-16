@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import spring.stratego.model.Chat;
@@ -93,7 +94,6 @@ public class GameController {
 
 
         GameRoom[] gameRooms = gameRoomManager.getGameRooms();
-        System.out.println("Game Rooms size: " + gameRooms.length);
         model.addAttribute("gameRooms", gameRooms);
         return "redirect:/lobby";
     }
@@ -120,12 +120,14 @@ public class GameController {
         System.out.println("Creating game room with name: " + roomname);
         Player currentPlayer = (Player) session.getAttribute("player");
         GameRoom gameRoom = gameRoomManager.createGameRoom(roomname);
-    
         gameRoomManager.joinGameRoom(gameRoom, currentPlayer);
+
+        System.out.println("Size of game room: " + gameRoomManager.getGameRoomCount());
 
         session.setAttribute("roomId", gameRoom.getId());
         session.setAttribute("player", currentPlayer);
-        session.setAttribute(roomname, gameRoom);
+        session.setAttribute("gameRoom", gameRoom);
+        model.addAttribute("roomId", gameRoom.getId());
         return "redirect:/game/" + gameRoom.getId();
     }
 
@@ -135,23 +137,36 @@ public class GameController {
      * Output to client: boolean true/false
      */
     @PostMapping("/joinGameRoom")
-    public String joinGameRoom(@ModelAttribute("roomId") String roomId, Model model, HttpSession session, BindingResult bindingResult) {
+    public String joinGameRoom(@ModelAttribute("gameRoomId") String roomId, Model model, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "error";
         }
         System.out.println("Joining game room with id: " + roomId);
         Player currentPlayer = (Player) session.getAttribute("player");
         GameRoom gameRoom = gameRoomManager.getGameRoom(roomId);
-        if (gameRoom != null) {
+        if (gameRoom.playerIsInRoom(currentPlayer)) {
+            System.out.println("Player already in room");
+            return "redirect:/game/" + gameRoom.getId();
+        } else {
             gameRoomManager.joinGameRoom(gameRoom, currentPlayer);
             session.setAttribute("roomId", gameRoom.getId());
             session.setAttribute("player", currentPlayer);
             session.setAttribute("roomname", gameRoom.getName());
             session.setAttribute("gameRoom", gameRoom);
+            model.addAttribute("roomId", gameRoom.getId());
             return "redirect:/game/" + gameRoom.getId();
-        } else {
-            return "error";
         }
+    }
+
+    @GetMapping("/roomId")
+    @ResponseBody
+    public String getRoomId(HttpSession session) {
+        return session.getAttribute("roomId").toString();
+    }
+    @GetMapping("/name")
+    @ResponseBody
+    public String getName(HttpSession session) {
+        return session.getAttribute("player").toString();
     }
 
     /*

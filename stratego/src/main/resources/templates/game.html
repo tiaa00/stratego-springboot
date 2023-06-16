@@ -21,11 +21,9 @@
 </head>
 
 <body>
-    <button onclick="sendMoveMessage()">Send Move</button>
-    <button onclick="sendChatMessage()">Send Chat Message</button>
     <br><br>
 
-    <div class="container" style="display: flex;">
+    <div id="room-id" th:data-roomid="${roomId}" class="container" style="display: flex;">
 
         <div class="grid-container" id="board" style="background-image: url('/images/background_normal.png');">
 
@@ -133,48 +131,13 @@
 
         <div class="chat-container">
             <div class="message-list">
-                <div class="message received">
-                    <div class="message-content">
-                        <p>Hey, how are you?</p>
-                        <span class="message-time">10:30 AM</span>
-                    </div>
-                </div>
-                <div class="message sent">
-                    <div class="message-content">
-                        <p>I'm good, thanks for asking!</p>
-                        <span class="message-time">10:35 AM</span>
-                    </div>
-                </div>
-                <div class="message received">
-                    <div class="message-content">
-                        <p>Hey, how are you?</p>
-                        <span class="message-time">10:30 AM</span>
-                    </div>
-                </div>
-                <div class="message sent">
-                    <div class="message-content">
-                        <p>I'm good, thanks for asking!</p>
-                        <span class="message-time">10:35 AM</span>
-                    </div>
-                </div>
-                <div class="message received">
-                    <div class="message-content">
-                        <p>Hey, how are you?</p>
-                        <span class="message-time">10:30 AM</span>
-                    </div>
-                </div>
-                <div class="message sent">
-                    <div class="message-content">
-                        <p>I'm good, thanks for asking!</p>
-                        <span class="message-time">10:35 AM</span>
-                    </div>
-                </div>
-                <!-- Add more message divs as needed -->
+                <!-- // map content game.js -->
             </div>
             <div class="input-area">
-                <input type="text" placeholder="Type your message..." />
-                <button>Send</button>
+                <input id="message-input" type="text" placeholder="Type your message..." />
+                <button onclick="sendChatMessage()">Send</button>
             </div>
+            
         </div>
 
     </div>
@@ -199,7 +162,6 @@
             <button class="btn btn-primary">Ready</button>
         </div>
     </div>
-    
 
 
 </body>
