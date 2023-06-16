@@ -1,6 +1,5 @@
 package spring.stratego;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import spring.stratego.model.Chat;
 import spring.stratego.model.Player;
+import spring.stratego.model.Room;
 import spring.stratego.service.ChatService;
 import spring.stratego.service.PlayerService;
 
@@ -60,12 +60,13 @@ public class GameController {
         }
     }
 
-    private void createPlayer(String name, String id) {
+    private Player createPlayer(String name, String id) {
         Player player = new Player();
         player.setName(name);
         player.setId(id);
         Player createdPlayer = playerService.createPlayer(player);
         System.out.println("Created Player: " + createdPlayer);
+        return createdPlayer;
     }
 
     private static void createChat(ChatService chatService, String chatLog, String chatId) {
@@ -93,29 +94,58 @@ public class GameController {
         }
     }
 
+    /*
+     * ENDPOINT DEFINITIONS
+     */
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("message", "Hello, Thymeleaf!");
+        return "index";
+    }
 
+    @PostMapping("/exit")
+    public void handleExitButton(){
+        exitGame();
+    }
 
     @PostMapping("/createPlayer")
-    public String showLobby(Model model, @RequestParam String username, HttpSession session) {
+    public String createPlayer(Model model, @RequestParam String username, HttpSession session) {
         // method to store into database.
-        createPlayer(username, session.toString());
+        Player player1 = createPlayer(username, session.toString());
         session.setAttribute("username", username);
-        model.addAttribute("username", username);
-        String[] rooms = {"room1", "room2", "room3"};
+        model.addAttribute("player", player1);
+        Room[] rooms = {
+            new Room("0", "testName", player1, player1),
+            new Room("1", "testName", player1, null),
+            new Room("2", "testName", player1, null),
+        };
         model.addAttribute("rooms", rooms);
         return "lobby";
     }
 
-    @MessageMapping("/game/{sessionId}/move")
-    // @MessageMapping("/game")
-    @SendTo("/topic/game/{sessionId}")
-    public String handleMoveMessage(@DestinationVariable String sessionId, MoveMessage moveMessage) {
-        System.out.println("Received move message from session " + sessionId + " " + moveMessage);
-
-        // convert int to String
-        return String.valueOf("Move " + gameRoomCounter++);
-        
+    /*
+     * Create room endpoint
+     * Input from client: takde
+     * Output to client: sessionId
+     */
+    @PostMapping("/createGameRoom")
+    public String createGameRoom(@ModelAttribute("player") String player, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "error";
+        }
+        int roomId = gameRoomCounter++;
+        GameRoom gameRoom = new GameRoom(String.valueOf(roomId));
+        session.setAttribute("roomId", roomId);
+        session.setAttribute("player", player);
+        return "redirect:/game/" + roomId;
     }
+
+    /*
+     * Join room endpoint
+     * Input from client: sessionId:
+     * Output to client: boolean true/false
+     */
+    @PostMapping("/joinGameRoom")
 
     /*
      * Game room endpoint
@@ -135,30 +165,15 @@ public class GameController {
         }
     }
 
-    /*
-     * Create room endpoint
-     * Input from client: takde
-     * Output to client: sessionId
-     */
-    @PostMapping("/createGameRoom")
-    public String createRoom(@ModelAttribute("player") String player, HttpSession session, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "error";
-        }
-        int roomId = gameRoomCounter++;
-        GameRoom gameRoom = new GameRoom(String.valueOf(roomId));
-        session.setAttribute("roomId", roomId);
-        session.setAttribute("player", player);
-        return "redirect:/game/" + roomId;
+    @MessageMapping("/game/{sessionId}/move")
+    @SendTo("/topic/game/{sessionId}")
+    public String handleMoveMessage(@DestinationVariable String sessionId, MoveMessage moveMessage) {
+        System.out.println("Received move message from session " + sessionId + " " + moveMessage);
+
+        // convert int to String
+        return String.valueOf("Move " + gameRoomCounter++);
+        
     }
-
-    /*
-     * Join room endpoint
-     * Input from client: sessionId:
-     * Output to client: boolean true/false
-     */
-    @PostMapping("/joinGameRoom")
-
 
     /*
      * GameBoard endpoint
@@ -172,5 +187,6 @@ public class GameController {
 
         return board;
     }
+    
     
 }

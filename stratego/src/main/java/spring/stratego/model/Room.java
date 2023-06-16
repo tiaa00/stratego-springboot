@@ -6,20 +6,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "rooms")
 public class Room {
     @Id
-    private String id;
     private String roomID;
-    private String player1ID;
-    private String player2ID;
-    private String chatID;
+    private String name;
+    private Player player1;
+    private Player player2;
+    public static final int MAX_PLAYERS = 2;
 
-    // Getters and Setters
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Room(String roomID, String name, Player player1, Player player2) {
+        this.roomID = roomID;
+        this.name = name;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.name = name;
     }
 
     public String getRoomID() {
@@ -30,28 +28,40 @@ public class Room {
         this.roomID = roomID;
     }
 
-    public String getPlayer1ID() {
-        return player1ID;
+    public String getName() {
+        return name;
     }
 
-    public void setPlayer1ID(String player1ID) {
-        this.player1ID = player1ID;
+    public void setName(String roomName) {
+        this.name = roomName;
     }
 
-    public String getPlayer2ID() {
-        return player2ID;
+    public Player getPlayer1() {
+        return player1;
     }
 
-    public void setPlayer2ID(String player2ID) {
-        this.player2ID = player2ID;
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
     }
 
-    public String getChatID() {
-        return chatID;
+    public Player getPlayer2() {
+        return player2;
     }
 
-    public void setChatID(String chatID) {
-        this.chatID = chatID;
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public int getNumPlayers() {
+        if (player1 == null && player2 == null) {
+            return 0;
+        } else if (player1 != null && player2 == null) {
+            return 1;
+        } else if (player1 == null && player2 != null) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     // toString method
@@ -59,11 +69,10 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "id='" + id + '\'' +
                 ", roomID='" + roomID + '\'' +
-                ", player1ID='" + player1ID + '\'' +
-                ", player2ID='" + player2ID + '\'' +
-                ", chatID='" + chatID + '\'' +
+                ", name='" + name + '\'' +
+                ", player1='" + player1.getName() + '\'' +
+                ", player2='" + player1.getName() + '\'' +
                 '}';
     }
 }
