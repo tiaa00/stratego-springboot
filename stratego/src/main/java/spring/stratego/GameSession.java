@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,6 +31,25 @@ public class GameSession {
         // convert int to String
         return String.valueOf("Move " + gameRoomCounter++);
         
+    }
+
+
+    /*
+     * Game room endpoint
+     * Input from client: roomID
+     * Output to client: GameRoom state
+     */
+    @GetMapping("/game/{roomID}")
+    public String gameRoom(Model model, @PathVariable String roomID, HttpSession session) {
+        System.out.println("Room ID: " + roomID);
+        
+        if (roomID != null) {
+            // Add model attributes needed for template 
+            return "game";
+        } else {
+            // Handle invalid room ID
+            return "error";
+        }
     }
 
     /*

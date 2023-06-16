@@ -115,22 +115,4 @@ public class StrategoApplication {
         System.out.println("Game exited");
         System.exit(0); //to forcefully terminate the application
     }
-
-    // @GetMapping("/game/{roomID}")
-    // public String gameRoom(Model model, @RequestParam String roomID, HttpSession session) {
-    //     return "game";
-    // }
-
-    @GetMapping("/game/{roomID}")
-    public String gameRoom(Model model, @PathVariable String roomID, HttpSession session) {
-        System.out.println("Room ID: " + roomID);
-        
-        if (roomID != null) {
-            // Add model attributes needed for template 
-            return "game";
-        } else {
-            // Handle invalid room ID
-            return "error";
-        }
-    }
 }
