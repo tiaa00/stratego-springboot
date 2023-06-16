@@ -32,10 +32,6 @@
 	z-index: 2;
 }
 
-.drag-over {
-	border: 2px dashed gray;
-}
-
 .grid-container {
 	display: grid;
 	grid-template-columns: repeat(10, 1fr);
@@ -49,12 +45,14 @@
 	/* Add a border around the entire grid */
 	background-position: center;
 	flex-direction: row;
+	background-image: url(../static/images/background_normal.png);
 }
 
 .grid-item {
 	border: 1px solid #000000;
 	/* Add a border to each grid cell */
 	text-align: center;
+	position: relative;
 }
 
 .grid-container::before,
@@ -68,14 +66,12 @@
 	/* Add a border to each grid cell */
 }
 
-.grid {
-	width: 500px;
-	height: 500px;
-	display: grid;
-	flex-direction: row;
-	margin: auto;
-	border: 1px solid #000000;
-	align-items: center;
+.grid-item img {
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 }
 
 .chat-container {
